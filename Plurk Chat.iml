@@ -15,7 +15,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="Scribe" />
+    <orderEntry type="module" module-name="jplurk-oauth" />
   </component>
 </module>
 
