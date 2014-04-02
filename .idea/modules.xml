@@ -3,8 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Plurk Chat.iml" filepath="$PROJECT_DIR$/Plurk Chat.iml" />
-      <module fileurl="file://$PROJECT_DIR$/3rd party library/scribe-java/src/main/Scribe.iml" filepath="$PROJECT_DIR$/3rd party library/scribe-java/src/main/Scribe.iml" />
-      <module fileurl="file://$PROJECT_DIR$/3rd party library/jplurk-oauth/src/main/jplurk-oauth.iml" filepath="$PROJECT_DIR$/3rd party library/jplurk-oauth/src/main/jplurk-oauth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/3rd party library/scribe-java/src/main/scribe-java.iml" filepath="$PROJECT_DIR$/3rd party library/scribe-java/src/main/scribe-java.iml" />
     </modules>
   </component>
 </project>
