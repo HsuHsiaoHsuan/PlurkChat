@@ -21,8 +21,8 @@ public class PlurkOAuth {
     private static final boolean D = true;
     private static final String TAG = "PlurkOAuth";
 
-    private final static String API_KEY = "eOrMDFD8f5V2";
-    private final static String API_SECRET = "aiVo5OOdWJMl0vEEblPVNRmbG3EeIQh5";
+    private final static String API_KEY = "iwMUO0N5amJt";
+    private final static String API_SECRET = "pLNMmgcQybqRaP9aLHhd984kFnPquYd1";
 
     private OAuthService service;
     private Token requestToken;
