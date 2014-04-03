@@ -24,4 +24,9 @@ public class Mod_Utilities extends AbstractModule {
     public void echo() {
 
     }
+
+    @Override
+    protected String getModulePath() {
+        return "/APP";
+    }
 }

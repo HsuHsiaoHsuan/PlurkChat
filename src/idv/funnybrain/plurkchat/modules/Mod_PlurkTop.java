@@ -19,4 +19,9 @@ public class Mod_PlurkTop extends AbstractModule {
     public void getPlurks() {
 
     }
+
+    @Override
+    protected String getModulePath() {
+        return "/APP/PlurkTop";
+    }
 }

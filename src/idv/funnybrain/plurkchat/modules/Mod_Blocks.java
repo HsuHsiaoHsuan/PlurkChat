@@ -19,4 +19,9 @@ public class Mod_Blocks extends AbstractModule {
     public void unblock() {
 
     }
+
+    @Override
+    protected String getModulePath() {
+        return "/APP/Blocks";
+    }
 }

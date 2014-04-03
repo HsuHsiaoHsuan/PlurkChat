@@ -34,4 +34,9 @@ public class Mod_Cliques extends AbstractModule {
     public void remove() {
 
     }
+
+    @Override
+    protected String getModulePath() {
+        return "/APP/Cliques";
+    }
 }

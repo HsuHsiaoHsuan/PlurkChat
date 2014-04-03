@@ -11,4 +11,9 @@ public class Mod_Emoticons extends AbstractModule {
     public void get() {
 
     }
+
+    @Override
+    protected String getModulePath() {
+        return "/APP/Emoticons";
+    }
 }

@@ -16,4 +16,9 @@ public class Mod_Profile extends AbstractModule {
     public void getPublicProfile() {
 
     }
+
+    @Override
+    protected String getModulePath() {
+        return "/APP/Profile";
+    }
 }

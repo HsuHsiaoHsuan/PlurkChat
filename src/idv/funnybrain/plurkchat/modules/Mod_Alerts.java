@@ -3,7 +3,7 @@ package idv.funnybrain.plurkchat.modules;
 /**
  * Created by Freeman on 2014/4/2.
  */
-public class Mod_Alerts extends AbstractModule{
+public class Mod_Alerts extends AbstractModule {
 
     // Return a JSON list of current active alerts.
     public void getActive() {
@@ -43,5 +43,10 @@ public class Mod_Alerts extends AbstractModule{
     // Remove notification to user with id user_id.
     public void removeNotification() {
 
+    }
+
+    @Override
+    protected String getModulePath() {
+        return "/APP/Alerts";
     }
 }

@@ -9,4 +9,9 @@ public class Mod_PlurkSearch extends AbstractModule {
     public void search() {
 
     }
+
+    @Override
+    protected String getModulePath() {
+        return "/APP/PlurkSearch";
+    }
 }

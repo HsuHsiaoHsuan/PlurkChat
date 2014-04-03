@@ -19,4 +19,9 @@ public class Mod_Responses extends AbstractModule {
     public void responseDelete() {
 
     }
+
+    @Override
+    protected String getModulePath() {
+        return "/APP/Response";
+    }
 }

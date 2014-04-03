@@ -1,5 +1,15 @@
 package idv.funnybrain.plurkchat.modules;
 
+import idv.funnybrain.plurkchat.RequestException;
+import idv.funnybrain.plurkchat.data.Language;
+import idv.funnybrain.plurkchat.data.Qualifier;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Freeman on 2014/4/2.
  */
@@ -25,9 +35,36 @@ public class Mod_Timeline extends AbstractModule {
 
     }
 
-    //
-    public void plurkAdd() {
+    /**
+     *
+     * @param content The Plurk's text.
+     * @param qualifier The Plurk's qualifier, must be in English.
+     * @param limited_to Limit the plurk only to some users (also known as private plurking).
+     *                   limited_to should be a JSON list of friend ids, e.g. limited_to of [3,4,66,34]
+     *                   will only be plurked to these user ids. If limited_to is [0] then the Plurk is
+     *                   privatley posted to the poster's friends.
+     * @param no_comments If set to 1, then responses are disabled for this plurk.
+     *                    If set to 2, then only friends can respond to this plurk.
+     * @param lang The plurk's language.
+     * @return JSONObject
+     */
+    public JSONObject plurkAdd(String content, Qualifier qualifier, String[] limited_to, int no_comments, Language lang) throws RequestException {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("content", content));
+        params.add(new BasicNameValuePair("qualifier", qualifier.toString()));
+        if(limited_to != null) {
+            params.add(new BasicNameValuePair("limited_to", limited_to.toString()));
+        }
+        if(no_comments != 0) {
+            params.add(new BasicNameValuePair("no_comments", String.valueOf(no_comments)));
+        }
+        if(lang != null) {
+            params.add(new BasicNameValuePair("lang", lang.toString()));
+        }
 
+
+        JSONObject result = requestAPI("plurkAdd").args(params).getJSONObjectResult();
+        return result;
     }
 
     //
@@ -95,5 +132,10 @@ public class Mod_Timeline extends AbstractModule {
     // others:     Others (其他)
     public void reportAbuse() {
 
+    }
+
+    @Override
+    protected String getModulePath() {
+        return "/APP/Timeline";
     }
 }

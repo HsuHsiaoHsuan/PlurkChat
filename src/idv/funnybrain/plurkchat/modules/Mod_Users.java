@@ -1,13 +1,17 @@
 package idv.funnybrain.plurkchat.modules;
 
+import idv.funnybrain.plurkchat.RequestException;
+import org.json.JSONObject;
+
 /**
  * Created by Freeman on 2014/4/2.
  */
 public class Mod_Users extends AbstractModule {
 
     // Returns information about current user, including page-title and user-about.
-    public void me() {
-
+    public JSONObject me() throws RequestException {
+        JSONObject result = requestAPI("me").args(null).getJSONObjectResult();
+        return result;
     }
 
     // Update a user's information (such as display name, email or privacy).
@@ -27,5 +31,10 @@ public class Mod_Users extends AbstractModule {
     // current karma, karma growth, karma graph and the latest reason why the karma has dropped.
     public void getKarmaStats() {
 
+    }
+
+    @Override
+    protected String getModulePath() {
+        return "/APP/Users";
     }
 }

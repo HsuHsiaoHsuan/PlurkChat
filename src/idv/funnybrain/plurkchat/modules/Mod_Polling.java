@@ -15,4 +15,9 @@ public class Mod_Polling extends AbstractModule {
     public void getUnreadCount() {
 
     }
+
+    @Override
+    protected String getModulePath() {
+        return "/APP/Polling";
+    }
 }

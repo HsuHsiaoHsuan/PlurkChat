@@ -48,4 +48,9 @@ public class Mod_FriendsFans extends AbstractModule {
     public void getCompletion() {
 
     }
+
+    @Override
+    protected String getModulePath() {
+        return "/APP/FriendsFans";
+    }
 }
