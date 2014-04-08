@@ -35,12 +35,9 @@ public class FunnyActivity extends Activity {
     private static final boolean D = true;
     private static final String TAG = "FunnyActivity";
 
-
-
     private final static int HANDLER_SHOW_AUTH_URL = 0;
     private final static int HANDLER_GET_ACCESS_TOKEN_OK = HANDLER_SHOW_AUTH_URL + 1;
     private final static int HANDLER_GET_SELF_OK = HANDLER_GET_ACCESS_TOKEN_OK +1;
-
     // ---- constant END ----
 
     // ---- local variable START ----
@@ -99,6 +96,13 @@ public class FunnyActivity extends Activity {
                         if(D) { Log.d(TAG, "HANDLER_GET_ACCESS_TOKEN"); }
                         setContentView(R.layout.empty);
                         //new PlurkTmpAsyncTask().execute("");
+                        // should get user self
+                        new Mod_Users_me_AsyncTask().execute("");
+
+                        //doTest();
+                        break;
+                    case HANDLER_GET_SELF_OK:
+                        if(D) { Log.d(TAG, "HANDLER_GET_SELF_OK: " + me.getDisplay_name()); }
                         ActionBar actionBar = getActionBar();
                         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
                         actionBar.setDisplayShowTitleEnabled(false);
@@ -117,13 +121,6 @@ public class FunnyActivity extends Activity {
                                                 FunnyActivity.this, "rooms", ChatRoomsFragment.class
                                         ))
                         );
-                        // should get user self
-                        new Mod_Users_me_AsyncTask().execute("");
-
-                        //doTest();
-                        break;
-                    case HANDLER_GET_SELF_OK:
-                        if(D) { Log.d(TAG, "HANDLER_GET_SELF_OK: " + me.getDisplay_name()); }
                         break;
                 }
             }
@@ -168,6 +165,10 @@ public class FunnyActivity extends Activity {
     public void doTest() {
         new PlurkTmpAsyncTask().execute("");
     }
+
+    public PlurkOAuth getPlurkOAuth() { return plurkOAuth; }
+
+    public Me getMe() { return me; }
 
     // ---- inner class START ----
     private class PlurkLoginAsyncTask extends AsyncTask<String, Void, String> {

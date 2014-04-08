@@ -5,6 +5,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -55,6 +56,14 @@ public class RequestMaker {
         try {
             return new JSONObject(requestResult());
         } catch (Exception e) {
+            throw new RequestException(e);
+        }
+    }
+
+    public JSONArray getJSONArrayResult() throws RequestException {
+        try {
+            return new JSONArray(requestResult());
+        } catch(Exception e) {
             throw new RequestException(e);
         }
     }

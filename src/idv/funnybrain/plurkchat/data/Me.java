@@ -13,7 +13,7 @@ public class Me {
     private String about;
     private String avatar_small;
     private String nick_name;
-    private int id;
+    private String id;
     private double karma;
     private String timezone;
     private int bday_privacy;
@@ -28,7 +28,7 @@ public class Me {
     private String privacy;
     private int profile_views;
     private int plurks_count;
-    private int avatar;
+    private String avatar;
     private String avatar_big;
     private boolean setup_facebook_sync;
     private String relationship;
@@ -49,7 +49,7 @@ public class Me {
         about = me.getString("about");
         avatar_small = me.getString("avatar_small");
         nick_name = me.getString("nick_name");
-        id = me.getInt("id");
+        id = me.getString("id");
         karma = me.getDouble("karma");
         timezone = me.getString("timezone");
         bday_privacy = me.getInt("bday_privacy");
@@ -64,7 +64,7 @@ public class Me {
         privacy = me.getString("privacy");
         profile_views = me.getInt("profile_views");
         plurks_count = me.getInt("plurks_count");
-        avatar = me.getInt("avatar");
+        avatar = me.getString("avatar");
         avatar_big = me.getString("avatar_big");
         setup_facebook_sync = me.getBoolean("setup_facebook_sync");
         relationship = me.getString("relationship");
@@ -80,7 +80,7 @@ public class Me {
         page_title = me.getString("page_title");
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
