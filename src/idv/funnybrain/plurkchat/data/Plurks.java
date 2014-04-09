@@ -37,40 +37,60 @@ public class Plurks {
     private String owner_id = null;
 
     public Plurks(JSONObject object) throws JSONException {
-        if(object.isNull("responses_seen"))       { responses_seen = object.getInt("responses_seen"); }
-        if(object.isNull("qualifier"))            { qualifier = Qualifier.getQualifier(object.getString("qualifier")); }
-        if(object.isNull("replurkers")) {
+        if(!object.isNull("responses_seen"))       { responses_seen = object.getInt("responses_seen"); }
+        if(!object.isNull("qualifier"))            { qualifier = Qualifier.getQualifier(object.getString("qualifier")); }
+        if(!object.isNull("replurkers")) {
             JSONArray tmp_replurkers = object.getJSONArray("replurkers");
             replurkers = new ArrayList<String>();
             for (int x = 0; x < tmp_replurkers.length(); x++) {
                 replurkers.add(tmp_replurkers.getString(x));
             }
         }
-        if(object.isNull("plurk_id"))             { plurk_id = object.getString("plurk_id"); }
-        if(object.isNull("response_count"))       { response_count = object.getInt("response_count"); }
-        if(object.isNull("replurkers_count"))     { replurkers_count = object.getInt("replurkers_count"); }
-        if(object.isNull("replurkable"))          { replurkable = object.getBoolean("replurkable"); }
-        if(object.isNull("limited_to"))           { limited_to = object.getString("limited_to"); }
-        if(object.isNull("no_comments"))          { no_comments = object.getInt("no_comments"); }
-        if(object.isNull("favorite_count"))       { favorite_count = object.getInt("favorite_count"); }
-        if(object.isNull("is_unread"))            { is_unread = object.getInt("is_unread"); }
-        if(object.isNull("lang"))                 { lang = Language.getLang(object.getString("lang")); }
-        if(object.isNull("favorers")) {
+        if(!object.isNull("plurk_id"))             { plurk_id = object.getString("plurk_id"); }
+        if(!object.isNull("response_count"))       { response_count = object.getInt("response_count"); }
+        if(!object.isNull("replurkers_count"))     { replurkers_count = object.getInt("replurkers_count"); }
+        if(!object.isNull("replurkable"))          { replurkable = object.getBoolean("replurkable"); }
+        if(!object.isNull("limited_to"))           { limited_to = object.getString("limited_to"); }
+        if(!object.isNull("no_comments"))          { no_comments = object.getInt("no_comments"); }
+        if(!object.isNull("favorite_count"))       { favorite_count = object.getInt("favorite_count"); }
+        if(!object.isNull("is_unread"))            { is_unread = object.getInt("is_unread"); }
+        if(!object.isNull("lang"))                 { lang = Language.getLang(object.getString("lang")); }
+        if(!object.isNull("favorers")) {
             JSONArray tmp_favorers = object.getJSONArray("favorers");
             favorers = new ArrayList<String>();
             for (int x = 0; x < tmp_favorers.length(); x++) {
                 favorers.add(tmp_favorers.getString(x));
             }
         }
-        if(object.isNull("content_raw"))          { content_raw = object.getString("content_raw"); }
-        if(object.isNull("user_id"))              { user_id = object.getString("user_id"); }
-        if(object.isNull("plurk_type"))           { plurk_type = object.getInt("plurk_type"); }
-        if(object.isNull("qualifier_translated")) { qualifier_translated = object.getString("qualifier_translated"); }
-        if(object.isNull("replurked"))            { replurked = object.getBoolean("replurked"); }
-        if(object.isNull("favorite"))             { favorite = object.getBoolean("favorite"); }
-        if(object.isNull("content"))              { content = object.getString("content"); }
-        if(object.isNull("replurker_id"))         { replurker_id = object.getString("replurker_id"); }
-        if(object.isNull("posted"))               { posted = object.getString("posted"); }
-        if(object.isNull("owner_id"))             { owner_id = object.getString("owner_id"); }
+        if(!object.isNull("content_raw"))          { content_raw = object.getString("content_raw"); }
+        if(!object.isNull("user_id"))              { user_id = object.getString("user_id"); }
+        if(!object.isNull("plurk_type"))           { plurk_type = object.getInt("plurk_type"); }
+        if(!object.isNull("qualifier_translated")) { qualifier_translated = object.getString("qualifier_translated"); }
+        if(!object.isNull("replurked"))            { replurked = object.getBoolean("replurked"); }
+        if(!object.isNull("favorite"))             { favorite = object.getBoolean("favorite"); }
+        if(!object.isNull("content"))              { content = object.getString("content"); }
+        if(!object.isNull("replurker_id"))         { replurker_id = object.getString("replurker_id"); }
+        if(!object.isNull("posted"))               { posted = object.getString("posted"); }
+        if(!object.isNull("owner_id"))             { owner_id = object.getString("owner_id");}
+    }
+
+    public String getOwner_id() {
+        return owner_id;
+    }
+
+    public String getPlurk_id() {
+        return plurk_id;
+    }
+
+    public String getContent_raw() {
+        return content_raw;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getPosted() {
+        return posted;
     }
 }

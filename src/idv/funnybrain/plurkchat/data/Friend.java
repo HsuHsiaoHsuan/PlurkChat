@@ -32,57 +32,56 @@ import org.json.JSONObject;
  *
  */
 public class Friend {
-    private boolean email_confirmed;
-    private String uid;
-    private int following_tl;
-    private String location;
-    private boolean verified_account;
-//    private boolean settings;
-    private int following_im;
-    private int recruited;
-    private String date_of_birth;
-    private String avatar;
-    private String nick_name;
-    private String relationship;
-    private String id;
-    private double karma;
-    private String display_name;
-//    private String name_color;
-    private boolean following;
-    private String timezone;
-    private String dateformat;
-    private int bday_privacy;
-    private int gender;
-    private int has_profile_image;
-    private String default_lang;
-    private String full_name;
+    private boolean email_confirmed = false;
+    private String uid = null;
+    private int following_tl = 0;
+    private String location = null;
+    private boolean verified_account = false;
+    private boolean settings = false; // FIXME
+    private int following_im = 0;
+    private int recruited = 0;
+    private String date_of_birth = null;
+    private String avatar = null;
+    private String nick_name = null;
+    private String relationship = null;
+    private String id = null;
+    private double karma = 0;
+    private String display_name = null;
+    private String name_color = null; // FIXME
+    private boolean following = false;
+    private String timezone = null;
+    private String dateformat = null;
+    private int bday_privacy = 0;
+    private int gender = 2; // 1 is male, 0 is female, 2 is not stating/other.
+    private int has_profile_image = 0;
+    private String default_lang = null;
+    private String full_name = null;
 
     public Friend(JSONObject friend) throws JSONException {
-        email_confirmed = friend.getBoolean("email_confirmed");
-        uid = friend.getString("uid");
-        following_tl = friend.getInt("following_tl");
-        location = friend.getString("location");
-        verified_account = friend.getBoolean("verified_account");
-//        settings = friend.getBoolean("settings");
-        following_im = friend.getInt("following_im");
-        recruited = friend.getInt("recruited");
-        date_of_birth = friend.getString("date_of_birth");
-        avatar = friend.getString("avatar");
-        nick_name = friend.getString("nick_name");
-        relationship = friend.getString("relationship");
-        id = friend.getString("id");
-        karma = friend.getDouble("karma");
-        display_name = friend.getString("display_name");
-//        System.out.println("NONONONONONONONONONO: " + friend.getString("name_color"));
-//        name_color = friend.getString("name_color");
-        following = friend.getBoolean("following");
-        timezone = friend.getString("timezone");
-        dateformat = friend.getString("dateformat");
-        bday_privacy = friend.getInt("bday_privacy");
-        gender = friend.getInt("gender");
-        has_profile_image = friend.getInt("has_profile_image");
-        default_lang = friend.getString("default_lang");
-        full_name = friend.getString("full_name");
+        if(!friend.isNull("email_confirmed"))   { email_confirmed = friend.getBoolean("email_confirmed"); }
+        if(!friend.isNull("uid"))               { uid = friend.getString("uid"); }
+        if(!friend.isNull("following_tl"))      { following_tl = friend.getInt("following_tl"); }
+        if(!friend.isNull("location"))          { location = friend.getString("location"); }
+        if(!friend.isNull("verified_account"))  { verified_account = friend.getBoolean("verified_account"); }
+        if(!friend.isNull("settings"))          { settings = friend.getBoolean("settings"); }
+        if(!friend.isNull("following_im"))      { following_im = friend.getInt("following_im"); }
+        if(!friend.isNull("recruited"))         { recruited = friend.getInt("recruited"); }
+        if(!friend.isNull("date_of_birth"))     { date_of_birth = friend.getString("date_of_birth"); }
+        if(!friend.isNull("avatar"))            { avatar = friend.getString("avatar"); }
+        if(!friend.isNull("nick_name"))         { nick_name = friend.getString("nick_name"); }
+        if(!friend.isNull("relationship"))      { relationship = friend.getString("relationship"); }
+        if(!friend.isNull("id"))                { id = friend.getString("id"); }
+        if(!friend.isNull("karma"))             { karma = friend.getDouble("karma"); }
+        if(!friend.isNull("display_name"))      { display_name = friend.getString("display_name"); }
+        if(!friend.isNull("name_color"))        { name_color = friend.getString("name_color"); }
+        if(!friend.isNull("following"))         { following = friend.getBoolean("following"); }
+        if(!friend.isNull("timezone"))          { timezone = friend.getString("timezone"); }
+        if(!friend.isNull("dateformat"))        { dateformat = friend.getString("dateformat"); }
+        if(!friend.isNull("bday_privacy"))      { bday_privacy = friend.getInt("bday_privacy"); }
+        if(!friend.isNull("gender"))            { gender = friend.getInt("gender"); }
+        if(!friend.isNull("has_profile_image")) { has_profile_image = friend.getInt("has_profile_image"); }
+        if(!friend.isNull("default_lang"))      { default_lang = friend.getString("default_lang"); }
+        if(!friend.isNull("full_name"))         { full_name = friend.getString("full_name"); }
     }
 
     public String getId() { return id; }
@@ -96,4 +95,18 @@ public class Friend {
     public int getHas_profile_image() { return has_profile_image; }
 
     public String getAvatar() { return avatar; }
+
+    public String getIconAddress() {
+        String imgURL = "http://www.plurk.com/static/default_big.gif";
+        if(getHas_profile_image()>0) {
+            String avatar = getAvatar();
+            if(avatar.equals("null")) {
+                imgURL = "http://avatars.plurk.com/" + getId() + "-big.jpg";
+            } else {
+                if(avatar.equals("0")) { avatar = ""; }
+                imgURL = "http://avatars.plurk.com/" + getId() + "-big" + avatar + ".jpg";
+            }
+        }
+        return imgURL;
+    }
 }

@@ -1,15 +1,13 @@
 package idv.funnybrain.plurkchat;
 
-import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -17,6 +15,9 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import idv.funnybrain.plurkchat.data.Language;
 import idv.funnybrain.plurkchat.data.Me;
 import idv.funnybrain.plurkchat.data.Qualifier;
@@ -30,7 +31,7 @@ import org.scribe.model.Token;
 import org.scribe.model.Verifier;
 import org.scribe.oauth.OAuthService;
 
-public class FunnyActivity extends Activity {
+public class FunnyActivity extends SherlockFragmentActivity {
     // ---- constant START ----
     private static final boolean D = true;
     private static final String TAG = "FunnyActivity";
@@ -103,7 +104,7 @@ public class FunnyActivity extends Activity {
                         break;
                     case HANDLER_GET_SELF_OK:
                         if(D) { Log.d(TAG, "HANDLER_GET_SELF_OK: " + me.getDisplay_name()); }
-                        ActionBar actionBar = getActionBar();
+                        ActionBar actionBar = getSupportActionBar();
                         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
                         actionBar.setDisplayShowTitleEnabled(false);
 
@@ -210,7 +211,7 @@ public class FunnyActivity extends Activity {
         protected JSONObject doInBackground(String... params) {
             JSONObject result = null;
             try {
-                System.out.println();
+                //System.out.println();
                 result = plurkOAuth.getModule(Mod_Timeline.class).plurkAdd("(wave)(wave)(wave)"+ Math.random(), Qualifier.SAYS, null, 0, Language.TR_CH);
             } catch (RequestException e) {
                 e.printStackTrace();
@@ -249,7 +250,7 @@ public class FunnyActivity extends Activity {
         }
     }
 
-    private static class TabListener<T extends Fragment> implements ActionBar.TabListener {
+    private static class TabListener<T extends SherlockFragment> implements ActionBar.TabListener {
         private Fragment fragment;
         private final Activity activity;
         private final String tag;
@@ -268,9 +269,9 @@ public class FunnyActivity extends Activity {
         }
 
         @Override
-        public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+        public void onTabSelected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
             if(fragment == null) {
-                fragment = Fragment.instantiate(activity, clz.getName(), args);
+                fragment = SherlockFragment.instantiate(activity, clz.getName(), args);
                 ft.add(android.R.id.content, fragment, tag);
             } else {
                 ft.attach(fragment);
@@ -278,14 +279,14 @@ public class FunnyActivity extends Activity {
         }
 
         @Override
-        public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+        public void onTabUnselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
             if(fragment != null) {
                 ft.detach(fragment);
             }
         }
 
         @Override
-        public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+        public void onTabReselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
 
         }
     }

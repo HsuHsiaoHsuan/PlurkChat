@@ -17,12 +17,40 @@ public class Mod_Timeline extends AbstractModule {
 
     //
     public void getPlurk() {
-
+        // call Mod_Polling/getPlurks
     }
 
-    //
-    public void getPlurks() {
-        // call Mod_Polling/getPlurks
+    /**
+     *
+     * @param offset Return plurks older than offset, formatted as 2009-6-20T21:55:34.
+     * @param limit How many plurks should be returned? Default is 20. Max 30
+     * @param filter Can be only_user, only_responded, only_private or only_favorite
+     * @param favorers_detail If true, detailed users information about all favorers of all plurks will be included into "plurk_users"
+     * @param limited_detail If true, detailed users information about all private plurks' recepients will be included into "plurk_users"
+     * @param replurkers_detail If true, detailed users information about all replurkers of all plurks will be included into "plurk_users"
+     * @return JSON data
+     */
+    public JSONObject getPlurks(String offset, int limit, String filter, boolean favorers_detail, boolean limited_detail, boolean replurkers_detail) throws RequestException {
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        if(offset != null) {
+            params.add(new BasicNameValuePair("offset", offset));
+        }
+        params.add(new BasicNameValuePair("limit", "30"));
+        if(filter != null) {
+            params.add(new BasicNameValuePair("filter", filter));
+        }
+        if(favorers_detail) {
+            params.add(new BasicNameValuePair("favorers_detail", "true"));
+        }
+        if(limited_detail) {
+            params.add(new BasicNameValuePair("limited_detail", "true"));
+        }
+        if(replurkers_detail) {
+            params.add(new BasicNameValuePair("replurkers_detail", "true"));
+        }
+
+        JSONObject result = requestAPI("getPlurks").args(params).getJSONObjectResult();
+        return result;
     }
 
     //

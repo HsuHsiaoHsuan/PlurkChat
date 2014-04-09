@@ -43,7 +43,8 @@ public enum Qualifier {
     FREESTYLE("freestyle"),
     HOPES("hopes"),
     NEEDS("needs"),
-    WONDERS("wonders");
+    WONDERS("wonders"),
+    WHISPERS("whispers");
 
     private String qualifier;
 

@@ -67,4 +67,8 @@ public class RequestMaker {
             throw new RequestException(e);
         }
     }
+
+    public String getStringResult() throws RequestException {
+        return requestResult();
+    }
 }
