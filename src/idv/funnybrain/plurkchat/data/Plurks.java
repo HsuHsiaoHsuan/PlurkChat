@@ -4,8 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by Freeman on 2014/4/8.
@@ -28,7 +29,7 @@ public class Plurks {
     private String content_raw = null;
     private String user_id = null;
     private int plurk_type = 0; // 0: public, 1: specific some body
-    private String qualifier_translated = null; // sometimes it will missing // FIXME
+    private String qualifier_translated = ""; // sometimes it will missing // FIXME
     private boolean replurked = false;
     private boolean favorite = false;
     private String content = null;
@@ -92,5 +93,37 @@ public class Plurks {
 
     public String getPosted() {
         return posted;
+    }
+
+    public String getReadablePostedDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("E,dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
+        try {
+            Date last_posted_date = sdf.parse(posted);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(last_posted_date);
+            SimpleDateFormat sdf_new = new SimpleDateFormat("yyyy MMMM d, a hh:mm:ss ");
+//            System.out.println(sdf_new.toLocalizedPattern());
+
+            return sdf_new.format(calendar.getTime()).toString();
+            //return "return: " +calendar.getTime().toString();
+            //System.out.println("convert to calendar: " + sdf_new.format(calendar.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return posted;
+        }
+    }
+
+    public String getQueryFormatedPostedDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("E,dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
+        try {
+            Date posted_date = sdf.parse(posted);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(posted_date);
+            SimpleDateFormat sdf_new = new SimpleDateFormat("yyyy-M-d'T'k:m:s");
+            return sdf_new.format(calendar.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return posted;
+        }
     }
 }

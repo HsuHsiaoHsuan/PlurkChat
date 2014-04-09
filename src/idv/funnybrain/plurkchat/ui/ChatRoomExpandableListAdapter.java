@@ -97,7 +97,8 @@ public class ChatRoomExpandableListAdapter extends BaseExpandableListAdapter {
         Plurk_Users user = plurk_users.get(groupPosition);
         holder.tv_id.setText(user.getId());
 
-        String showTitle = user.getDisplay_name().equals("") ? user.getFull_name() : user.getDisplay_name();
+
+        String showTitle = (user.getDisplay_name().equals("")) ? user.getFull_name() : user.getDisplay_name();
         holder.tv_title.setText(showTitle);
 
         String imgURL = user.getIconAddress();
@@ -111,6 +112,7 @@ public class ChatRoomExpandableListAdapter extends BaseExpandableListAdapter {
         public TextView tv_id;
         public ImageView iv_image;
         public TextView tv_title;
+        public TextView tv_posted;
     }
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
@@ -121,6 +123,7 @@ public class ChatRoomExpandableListAdapter extends BaseExpandableListAdapter {
             holder.tv_id = (TextView) rowView.findViewById(R.id.uid);
             holder.iv_image = (ImageView) rowView.findViewById(R.id.image);
             holder.tv_title = (TextView) rowView.findViewById(R.id.title);
+            holder.tv_posted = (TextView) rowView.findViewById(R.id.posted);
             rowView.setTag(holder);
         }
 
@@ -128,6 +131,7 @@ public class ChatRoomExpandableListAdapter extends BaseExpandableListAdapter {
         Plurks plurk = plurks.get(groupPosition).get(childPosition);
         holder.tv_id.setText(plurk.getPlurk_id());
         holder.tv_title.setText(Html.fromHtml(plurk.getContent()));
+        holder.tv_posted.setText(plurk.getReadablePostedDate());
 
         return rowView;
     }

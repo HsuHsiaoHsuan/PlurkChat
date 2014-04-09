@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import com.actionbarsherlock.app.SherlockFragment;
 import idv.funnybrain.plurkchat.FunnyActivity;
@@ -23,10 +24,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by Freeman on 2014/4/3.
@@ -46,6 +46,7 @@ public class ChatRoomsFragment extends SherlockFragment {
     private PlurkOAuth plurkOAuth;
     private Me me;
     private ExpandableListView list;
+    private Button bt_more;
     private ChatRoomExpandableListAdapter mAdapter;
 
     private ImageFetcher mImageFetcher;
@@ -90,6 +91,8 @@ public class ChatRoomsFragment extends SherlockFragment {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
             }
         });
+
+        bt_more = (Button) v.findViewById(R.id.bt_more);
 
         return v;
     }
@@ -233,13 +236,30 @@ public class ChatRoomsFragment extends SherlockFragment {
                 JSONArray obj_plurks = object.getJSONArray("plurks");
                 for (int x = 0; x < obj_plurks.length(); x++) {
                     plurks.add(new Plurks(obj_plurks.getJSONObject(x)));
-                    if(D) {
-                        Log.d(TAG, "posted: " + new Plurks(obj_plurks.getJSONObject(x)).getPosted());
+                    if(false) {
+                        Plurks debug = new Plurks(obj_plurks.getJSONObject(x));
+                        String debug_posted = debug.getPosted();
+                        //debug_posted = debug_posted.replaceAll("GMT", "");
+                        debug_posted = debug_posted.trim();
+                        //debug_posted = debug_posted.substring(5, debug_posted.length());
+                        Log.d(TAG, "posted: " + debug_posted);
+                        SimpleDateFormat sdf = new SimpleDateFormat("E,dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
+//                        Date curr = new Date();
+//                        System.out.println("現在時間: " + sdf.format(curr));
+                        try {
+                            sdf.parse(debug_posted);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                     if (false) {
                         Log.d(TAG, "" + obj_plurks.getJSONObject(x));
                     }
                 }
+
+                String posted = plurks.get(plurks.size()-1).getReadablePostedDate(); // plurks.size()-1
+                bt_more.setVisibility(View.VISIBLE);
+                bt_more.setText("最舊貼文:\n"+ posted);
 
                 for (int x = 0; x < group_plurk_users.size(); x++) {
                     ArrayList<Plurks> childList = new ArrayList<Plurks>();

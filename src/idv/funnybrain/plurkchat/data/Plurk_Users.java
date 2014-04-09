@@ -13,7 +13,7 @@ public class Plurk_Users {
 
     private boolean verified_account = false;
     private Language default_lang = null;
-    private String display_name = null; // FIXME sometimes it will missing
+    private String display_name = ""; // FIXME sometimes it will missing
     private int dateformat = 0;
     private String nick_name = null;
     private int has_profile_image = 0;
