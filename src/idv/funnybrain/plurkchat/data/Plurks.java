@@ -117,10 +117,12 @@ public class Plurks {
         SimpleDateFormat sdf = new SimpleDateFormat("E,dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
         try {
             Date posted_date = sdf.parse(posted);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(posted_date);
+            //Calendar calendar = Calendar.getInstance();
+            //calendar.setTime(posted_date);
             SimpleDateFormat sdf_new = new SimpleDateFormat("yyyy-M-d'T'k:m:s");
-            return sdf_new.format(calendar.getTime());
+            sdf_new.setTimeZone(TimeZone.getTimeZone("GMT"));
+            return sdf_new.format(posted_date);
+            //return sdf_new.format(calendar.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
             return posted;

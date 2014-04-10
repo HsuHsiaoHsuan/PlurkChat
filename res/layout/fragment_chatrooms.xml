@@ -28,5 +28,4 @@
             android:layout_below="@id/et_search"
             android:layout_above="@id/bt_more"/>
 
-
 </RelativeLayout>

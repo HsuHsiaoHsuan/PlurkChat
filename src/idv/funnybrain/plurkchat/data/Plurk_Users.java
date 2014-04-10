@@ -8,7 +8,7 @@ import org.json.JSONObject;
  * Created by Freeman on 2014/4/8.
  */
 public class Plurk_Users {
-    private static final boolean D = true;
+    private static final boolean D = false;
     private static final String TAG = "Plurk_Users";
 
     private boolean verified_account = false;
@@ -26,7 +26,7 @@ public class Plurk_Users {
     private String name_color = null;
     private String timezone = null;
     private String id = null;
-    private String avatar = null;
+    private String avatar = "NaN";
 
     public Plurk_Users(JSONObject object) throws JSONException {
         if(!object.isNull("verified_account"))  { verified_account = object.getBoolean("verified_account"); }

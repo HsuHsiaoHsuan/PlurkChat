@@ -24,9 +24,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by Freeman on 2014/4/3.
@@ -50,6 +51,10 @@ public class ChatRoomsFragment extends SherlockFragment {
     private ChatRoomExpandableListAdapter mAdapter;
 
     private ImageFetcher mImageFetcher;
+
+    HashMap<String, Plurk_Users> plurk_users;
+    HashMap<String, List<Plurks>> plurks;
+    String oldest_posted = "null";
     // ---- local variable END ----
 
     ChatRoomsFragment newInstance() {
@@ -68,6 +73,9 @@ public class ChatRoomsFragment extends SherlockFragment {
         mImageFetcher = new ImageFetcher(getSherlockActivity(), 100);
         mImageFetcher.setLoadingImage(R.drawable.default_plurk_avatar);
         mImageFetcher.addImageCache(getFragmentManager(), cacheParams);
+
+        plurk_users = new HashMap<String, Plurk_Users>();
+        plurks = new HashMap<String, List<Plurks>>();
     }
 
     @Override
@@ -91,8 +99,16 @@ public class ChatRoomsFragment extends SherlockFragment {
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
             }
         });
-
         bt_more = (Button) v.findViewById(R.id.bt_more);
+        bt_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String, String> params = new HashMap<String, String>();
+                params.put("offset", oldest_posted);
+                new Mod_Timeline_getPlurks_AsyncTask().execute(params);
+                bt_more.setEnabled(false);
+            }
+        });
 
         return v;
     }
@@ -130,19 +146,8 @@ public class ChatRoomsFragment extends SherlockFragment {
     }
 
     private class Mod_Timeline_getPlurks_AsyncTask extends AsyncTask<HashMap<String, String>, Void, JSONObject> {
-//        //private HashMap<String, Plurk_Users> plurk_users;
-//        private List<Plurks> plurks;
-//
-//        private List<Plurk_Users> group_plurk_users;
-//        private List<List<Plurks>> child_plurks;
-
         @Override
         protected JSONObject doInBackground(HashMap<String, String>... params) {
-//            //plurk_users = new HashMap<String, Plurk_Users>();
-//            plurks = new ArrayList<Plurks>();
-//            group_plurk_users = new ArrayList<Plurk_Users>();
-//            child_plurks = new ArrayList<List<Plurks>>();
-
             JSONObject result = null;
 
             String offset = null;
@@ -174,32 +179,7 @@ public class ChatRoomsFragment extends SherlockFragment {
 
             try {
                 result = plurkOAuth.getModule(Mod_Timeline.class).getPlurks(offset, limit, filter, favorers_detail, limited_detail, replurkers_detail);
-
                 return result;
-//                JSONObject obj_plurk_users = result.getJSONObject("plurk_users");
-//                Iterator<String> iterator = obj_plurk_users.keys();
-//                while(iterator.hasNext()) {
-//                    String idx = iterator.next();
-//                    if(D) { Log.d(TAG, "plurk_users: " + idx); }
-//                    if(D) { System.out.println(obj_plurk_users.getJSONObject(idx)); }
-//                    //plurk_users.put(idx, new Plurk_Users(obj_plurk_users.getJSONObject(idx)));
-//
-//                    group_plurk_users.add(new Plurk_Users(obj_plurk_users.getJSONObject(idx)));
-//                }
-//
-//                JSONArray obj_plurks = result.getJSONArray("plurks");
-//                for(int x=0; x<obj_plurks.length(); x++) {
-//                    plurks.add(new Plurks(obj_plurks.getJSONObject(x)));
-//                    if(false) { Log.d(TAG, "" + obj_plurks.getJSONObject(x)); }
-//                }
-//
-//                for(int x=0; x<group_plurk_users.size(); x++) {
-//                    ArrayList<Plurks> childList = new ArrayList<Plurks>();
-//                    String groupt_id = group_plurk_users.get(x).getId();
-//
-//                }
-//
-//                Log.d(TAG, "plurks: " + obj_plurks.length());
             } catch (RequestException e) {
                 Log.e(TAG, e.getMessage());
                 // e.printStackTrace();
@@ -214,87 +194,94 @@ public class ChatRoomsFragment extends SherlockFragment {
             //private HashMap<String, Plurk_Users> plurk_users = new HashMap<String, Plurk_Users>();
             List<Plurks> plurks = new ArrayList<Plurks>();
 
-            List<Plurk_Users> group_plurk_users = new ArrayList<Plurk_Users>();
-            List<List<Plurks>> child_plurks = new ArrayList<List<Plurks>>();
+//            List<Plurk_Users> group_plurk_users = new ArrayList<Plurk_Users>();
+//            List<List<Plurks>> child_plurks = new ArrayList<List<Plurks>>();
 
             try {
                 JSONObject obj_plurk_users = object.getJSONObject("plurk_users");
                 Iterator<String> iterator = obj_plurk_users.keys();
                 while (iterator.hasNext()) {
                     String idx = iterator.next();
-                    if (D) {
-                        Log.d(TAG, "plurk_users: " + idx);
-                    }
-                    if (false) {
-                        System.out.println(obj_plurk_users.getJSONObject(idx));
-                    }
-                    //plurk_users.put(idx, new Plurk_Users(obj_plurk_users.getJSONObject(idx)));
-
-                    group_plurk_users.add(new Plurk_Users(obj_plurk_users.getJSONObject(idx)));
+//                    group_plurk_users.add(new Plurk_Users(obj_plurk_users.getJSONObject(idx)));
+                    ChatRoomsFragment.this.plurk_users.put(idx, new Plurk_Users(obj_plurk_users.getJSONObject(idx)));
+                    Log.d(TAG, "length: " + ChatRoomsFragment.this.plurk_users.keySet());
                 }
 
                 JSONArray obj_plurks = object.getJSONArray("plurks");
                 for (int x = 0; x < obj_plurks.length(); x++) {
-                    plurks.add(new Plurks(obj_plurks.getJSONObject(x)));
-                    if(false) {
-                        Plurks debug = new Plurks(obj_plurks.getJSONObject(x));
-                        String debug_posted = debug.getPosted();
-                        //debug_posted = debug_posted.replaceAll("GMT", "");
-                        debug_posted = debug_posted.trim();
-                        //debug_posted = debug_posted.substring(5, debug_posted.length());
-                        Log.d(TAG, "posted: " + debug_posted);
-                        SimpleDateFormat sdf = new SimpleDateFormat("E,dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
-//                        Date curr = new Date();
-//                        System.out.println("現在時間: " + sdf.format(curr));
-                        try {
-                            sdf.parse(debug_posted);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                    Plurks post = new Plurks(obj_plurks.getJSONObject(x)); // get the post
+                    String own_id = post.getOwner_id(); // get the owner of the post
+
+                    if(ChatRoomsFragment.this.plurks.containsKey(own_id)) {
+                        ChatRoomsFragment.this.plurks.get(own_id).add(post);
+                    } else {
+                        ArrayList<Plurks> plurk_list = new ArrayList<Plurks>();
+                        plurk_list.add(post);
+                        ChatRoomsFragment.this.plurks.put(own_id, plurk_list);
                     }
-                    if (false) {
-                        Log.d(TAG, "" + obj_plurks.getJSONObject(x));
-                    }
+                    //plurks.add(new Plurks(obj_plurks.getJSONObject(x)));
                 }
 
-                String posted = plurks.get(plurks.size()-1).getReadablePostedDate(); // plurks.size()-1
+                Plurks oldest_plurk = new Plurks(obj_plurks.getJSONObject(obj_plurks.length()-1));
+                String posted_readable = oldest_plurk.getReadablePostedDate();
+
+//                String posted = plurks.get(plurks.size()-1).getReadablePostedDate(); // plurks.size()-1
                 bt_more.setVisibility(View.VISIBLE);
-                bt_more.setText("最舊貼文:\n"+ posted);
+                bt_more.setText("最舊貼文:\n" + posted_readable);
+                oldest_posted = oldest_plurk.getQueryFormatedPostedDate();
+                bt_more.setEnabled(true);
 
-                for (int x = 0; x < group_plurk_users.size(); x++) {
-                    ArrayList<Plurks> childList = new ArrayList<Plurks>();
-                    String group_id = group_plurk_users.get(x).getId();
-                    //System.out.println("group_id: "+ group_id);
-                    for(int y=0; y<plurks.size(); y++) {
-                        //System.out.println("owner_id: " + plurks.get(y).getOwner_id());
-                        if (plurks.get(y).getOwner_id().equals(group_id)) {
-                            childList.add(plurks.get(y));
-                        }
-                    }
-                    child_plurks.add(childList);
-                }
+//                for (int x = 0; x < group_plurk_users.size(); x++) {
+//                    ArrayList<Plurks> childList = new ArrayList<Plurks>();
+//                    String group_id = group_plurk_users.get(x).getId();
+//                    for(int y=0; y<plurks.size(); y++) {
+//                        if (plurks.get(y).getOwner_id().equals(group_id)) {
+//                            childList.add(plurks.get(y));
+//                        }
+//                    }
+//                    child_plurks.add(childList);
+//
+//                }
+
 
                 Log.d(TAG, "plurks: " + obj_plurks.length());
             } catch(JSONException jsone) {
                 Log.e(TAG, jsone.getMessage());
             }
 
-            if(false) {
-                Log.d(TAG, "Group Size: " + group_plurk_users.size());
-                Log.d(TAG, "Chiid Size: " + child_plurks.size());
-
-                for(int x=0; x<group_plurk_users.size(); x++) {
-                    Log.d(TAG, "Group " + x + ": " + group_plurk_users.get(x).getFull_name());
-                }
-
-                for(int x=0; x<child_plurks.size(); x++) {
-                    for(int y=0; y<child_plurks.get(x).size(); y++) {
-                        Log.d(TAG, x + " Child " + y + ": " + child_plurks.get(x).get(y).getContent());
-                    }
-                }
+            List<Plurk_Users> group_list = new ArrayList<Plurk_Users>(ChatRoomsFragment.this.plurk_users.values());
+            List<List<Plurks>> child_list = new ArrayList<List<Plurks>>();
+            for(int x=0; x<group_list.size(); x++) {
+                String userId = group_list.get(x).getId();
+                if(ChatRoomsFragment.this.plurks.containsKey(userId)) {
+                    child_list.add(ChatRoomsFragment.this.plurks.get(userId));
+                } else
+                    child_list.add(new ArrayList<Plurks>());
             }
 
-            mAdapter = new ChatRoomExpandableListAdapter(getSherlockActivity(), group_plurk_users, child_plurks, mImageFetcher);
+//            if(false) {
+//                Log.d(TAG, "Group Size: " + group_plurk_users.size());
+//                Log.d(TAG, "Chiid Size: " + child_plurks.size());
+//
+//                for(int x=0; x<group_plurk_users.size(); x++) {
+//                    Log.d(TAG, "Group " + x + ": " + group_plurk_users.get(x).getFull_name());
+//                }
+//
+//                for(int x=0; x<child_plurks.size(); x++) {
+//                    for(int y=0; y<child_plurks.get(x).size(); y++) {
+//                        Log.d(TAG, x + " Child " + y + ": " + child_plurks.get(x).get(y).getContent());
+//                    }
+//                }
+//            }
+
+
+
+
+            mAdapter = new ChatRoomExpandableListAdapter(
+                    getSherlockActivity(),
+                    group_list,
+                    child_list,
+                    mImageFetcher);
             list.setAdapter(mAdapter);
         }
     }

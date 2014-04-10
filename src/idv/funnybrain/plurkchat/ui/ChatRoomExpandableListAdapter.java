@@ -38,6 +38,10 @@ public class ChatRoomExpandableListAdapter extends BaseExpandableListAdapter {
         this.mImageFetcher = imageFetcher;
     }
 
+    public void addMore() {
+        if(D) { Log.d(TAG, "add More"); }
+    }
+
     @Override
     public int getGroupCount() {
         if(D) { Log.d(TAG, "getGroupCount" + plurk_users.size()); }
